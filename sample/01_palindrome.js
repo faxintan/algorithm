@@ -6,23 +6,6 @@
 
 // 方法一： 简单循环比较
 function isPalindrome1(str) {
-  // const arr = str.split('');
-  // const len = arr.length;
-
-  // if (len % 2) {
-  //   for (let i = 0; i <= (len - 1) / 2; i++) {
-  //     if (arr[i] !== arr[len - i - 1]) {
-  //       return false;
-  //     }
-  //   }
-  // } else {
-  //   for (let i = 0; i <= (len / 2 - 1); i++) {
-  //     if (arr[i] !== arr[len - i - 1]) {
-  //       return false;
-  //     }
-  //   }
-  // }
-
   for (let i = 0, j = str.length - 1; i < j; i++, j--) {
     if (str[i] !== str[j]) return false;
   }
