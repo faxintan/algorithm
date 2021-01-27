@@ -161,3 +161,88 @@ function checkInClusion(t, s) {
 console.log('是否包含字符串排列', checkInClusion('ab', 'eidbatest'));
 
 
+/**
+ * 找所有字母异位词
+ * 
+ * 输入一个串S，一个串T，找到S中所有T的排列，返回它们的起始索引
+ */
+function findAnagrams(s, t) {
+    let need = {}, window = {};
+
+    t.split('').forEach((c) => {
+        need[c] = (need[c] || 0) + 1;
+    })
+
+    let valid = 0;
+    let left = 0, right = 0;
+    let match = [];
+    
+    while(right < s.length) {
+        const char = s[right];
+        right++; // 右移窗口(扩大窗口)
+
+        // 更新窗口信息
+        if (need[char]) {
+            window[char] = (window[char] || 0) + 1;
+            if (need[char] === window[char]) {
+                valid++;
+            }
+        }
+
+        // 限制窗口宽度（查找子字符串，不能存在额外的多余字符）
+        while(right - left >= t.length) {
+            // 判断是否满足条件
+            if (valid === Object.keys(need).length) {
+                match.push([left, right]);
+            }
+            const b = s[left];
+            left++; // 左移窗口(优化窗口大小)
+            
+            // 更新窗口信息
+            if (need[b]) {
+                if (need[b] === window[b]) {
+                    valid--;
+                }
+                window[b]--;
+                
+            }
+        }
+    }
+
+    return match;
+}
+
+console.log('找所有字母异位词', findAnagrams('cbaebabacd', 'abc'));
+
+
+/**
+ * 最长无重复子串
+ * 
+ * @link https://mmbiz.qpic.cn/sz_mmbiz_png/gibkIz0MVqdGQlBxOlAet1AXGPoibCzEowdOEyLaTVTiabiabMHr2Z7SzZZ08fxMDZt4uzzRcfvoI7sJzfdORvH0tA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1
+ * 
+ * 当window[c]值大于 1 时，说明窗口中存在重复字符，不符合条件，就该移动left缩小窗口了
+ */
+function lengthOfLongestSubstring(s) {
+    let window = {};
+    let left = 0, right = 0;
+    let maxLen = 0;
+
+    while(right < s.length) {
+        const c = s[right];
+        right++;
+        window[c] = (window[c] || 0) + 1;
+
+        // 判断是否要优化窗口
+        while(window[c] > 1) {
+            const b = s[left];
+            left++;           
+            window[b]--; 
+        }
+
+        // 每次窗口符合条件时都需要更新信息
+        maxLen = Math.max(maxLen, right - left);
+    }
+    return maxLen;
+}
+
+console.log('最长无重复子串: ', lengthOfLongestSubstring('pwwkew'));
